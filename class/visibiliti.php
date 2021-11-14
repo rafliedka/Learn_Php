@@ -7,8 +7,9 @@ class Product{
     public $kategori,
            $nama,
            $pembuat,
-           $penerbit,
-           $harga;
+           $penerbit;
+    protected $diskon;
+    private $harga;
 
     public function __construct($kategori, $nama, $pembuat, $penerbit, $harga){
         $this->kategori = $kategori;
@@ -27,11 +28,15 @@ class Product{
         $str = "{$this->kategori} | {$this->getLable()} (Rp. $this->harga)";
         return $str;
     }
+    
+    public function getHarga(){
+        return $this->harga - ($this->harga * $this->diskon / 100);
+    }
 }
 
 class komik extends Product{
     
-    public $jmlHalaman;
+    private $jmlHalaman;
 
     public function __construct($kategori, $nama, $pembuat, $penerbit, $harga, $jmlHalaman){
         
@@ -43,11 +48,15 @@ class komik extends Product{
         $str = parent::getInfoProduct() . "~ {$this->jmlHalaman} Halaman.";
         return $str;
     }
+
+    public function setDiskon($diskon){
+        return $this->diskon = $diskon;
+    }
 }
 
 class game extends Product{
 
-    public $waktuMain;
+    private $waktuMain;
 
     public function __construct($kategori, $nama, $pembuat, $penerbit, $harga, $waktuMain){
         parent::__construct($kategori, $nama, $pembuat, $penerbit, $harga, $waktuMain);
@@ -68,3 +77,7 @@ echo $product1->getInfoProduct();
 echo "<br>";
 echo $product2->getInfoProduct();
 
+echo "<hr>";
+
+$product1->setDiskon(25);
+echo $product1->getHarga();
